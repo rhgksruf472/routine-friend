@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>소개/문의 - 루틴프렌드</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index.html">루틴프렌드</a>
+      <a href="index.html">홈</a>
+      <a href="routine.html">AI 루틴 추천</a>
+      <a href="encyclopedia.html">운동 백과</a>
+      <a href="about.html">소개/문의</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>루틴프렌드 소개</h1>
+      <p>운동 초보자가 헬스장 없이도 나에게 맞는 홈트를 시작할 수 있도록, AI가 즉석에서 루틴을 짜주는 서비스입니다.</p>
+    </section>
+
+    <!-- 문의 폼: 지금은 화면에 입력칸만 두고, 실제 전송 연동은 이후 단계에서 진행 -->
+    <form class="contact-form">
+      <label for="name">이름</label>
+      <input type="text" id="name" name="name">
+
+      <label for="email">이메일</label>
+      <input type="email" id="email" name="email">
+
+      <label for="message">문의 내용</label>
+      <textarea id="message" name="message" rows="4"></textarea>
+
+      <button type="submit" class="cta-button">문의 보내기</button>
+    </form>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 루틴프렌드</p>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
