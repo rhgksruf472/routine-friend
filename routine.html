@@ -27,6 +27,8 @@
     <form id="routine-form" class="routine-form">
       <label for="goal">목표</label>
       <select id="goal" name="goal">
+                <!-- value가 비어 있어 기본 선택 상태에서는 미입력으로 취급됨 -->
+        <option value="">선택해주세요</option>
         <option value="체중감량">체중감량</option>
         <option value="근력">근력</option>
         <option value="유연성">유연성</option>
@@ -35,6 +37,7 @@
 
       <label for="level">운동 경험</label>
       <select id="level" name="level">
+        <option value="">선택해주세요</option>
         <option value="초급">초급</option>
         <option value="중급">중급</option>
         <option value="고급">고급</option>
@@ -42,6 +45,7 @@
 
       <label for="time">하루 가용 시간(분)</label>
       <select id="time" name="time">
+        <option value="">선택해주세요</option>
         <option value="15">15분</option>
         <option value="30">30분</option>
         <option value="45">45분</option>
