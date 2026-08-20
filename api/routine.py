@@ -2,6 +2,7 @@ from http.server import BaseHTTPRequestHandler
 import json
 import os
 import requests  # Gemini REST API를 직접 호출하기 위해 사용 (mission-02와 동일 방식)
+import time as time_module  # 재시도 사이에 잠깐 기다리기 위해 사용
 
 class handler(BaseHTTPRequestHandler):
     def do_POST(self):
@@ -33,18 +34,27 @@ class handler(BaseHTTPRequestHandler):
                 "운동명, 세트/횟수 또는 시간, 순서를 포함하고, 예상 소요시간과 주의사항도 알려줘."
             )
 
-            # 키는 URL이 아닌 헤더로 전송 (mission-02에서 URL 노출 사고를 겪고 바꾼 방식)
-            response = requests.post(
-                                "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.7-flash:generateContent",
+                        # 키는 URL이 아닌 헤더로 전송 (mission-02에서 URL 노출 사고를 겪고 바꾼 방식)
+            url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent"
 
-                headers={
-                    "x-goog-api-key": api_key,
-                    "Content-Type": "application/json"
-                },
-                json={"contents": [{"parts": [{"text": prompt}]}]},
-                timeout=30
-            )
+            # 503(서버 과부하)은 일시적이므로 최대 3번까지 재시도한다
+            for attempt in range(3):
+                response = requests.post(
+                    url,
+                    headers={
+                        "x-goog-api-key": api_key,
+                        "Content-Type": "application/json"
+                    },
+                    json={"contents": [{"parts": [{"text": prompt}]}]},
+                    timeout=30
+                )
+                # 503이 아니면(성공이든 다른 오류든) 재시도하지 않고 빠져나간다
+                if response.status_code != 503:
+                    break
+                time_module.sleep(2)  # 2초 기다렸다가 다시 시도
+
             response.raise_for_status()  # 4xx/5xx면 예외를 일으켜 아래 except로 보냄
+
 
             # Gemini 응답 JSON에서 실제 텍스트만 꺼낸다
             result_text = response.json()['candidates'][0]['content']['parts'][0]['text']
