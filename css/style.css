@@ -1,40 +1,135 @@
-<!DOCTYPE html>
-<!-- 브라우저에게 HTML5 문서라고 알려주는 선언 -->
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <!-- 반응형을 위해 필수: 화면 너비를 기기 너비에 맞춘다 -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>루틴프렌드</title>
-  <!-- css 폴더의 스타일시트를 연결 -->
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-  <!-- 모든 페이지에 공통으로 들어갈 상단 메뉴 -->
-  <header>
-    <nav>
-      <a href="index.html">루틴프렌드</a>
-      <a href="index.html">홈</a>
-      <a href="routine.html">AI 루틴 추천</a>
-      <a href="encyclopedia.html">운동 백과</a>
-      <a href="about.html">소개/문의</a>
-    </nav>
-  </header>
+/* 브라우저마다 다른 기본 여백을 초기화 */
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-  <!-- 이 페이지만의 고유 콘텐츠 -->
-  <main>
-    <section class="hero">
-      <h1>나만의 홈트 루틴, AI가 짜드립니다</h1>
-      <p>목표와 가능한 시간만 알려주시면 지금 바로 맞춤 운동 루틴을 추천해드려요.</p>
-      <a href="routine.html" class="cta-button">루틴 추천받기</a>
-    </section>
-  </main>
+body {
+  font-family: 'Malgun Gothic', sans-serif;
+  color: #222;
+  line-height: 1.6;
+}
 
-  <footer>
-    <p>&copy; 2026 루틴프렌드</p>
-  </footer>
+/* 상단 메뉴바 배경 */
+header {
+  background: #2f6f4f;
+  padding: 1rem 2rem;
+}
 
-  <!-- js 폴더의 스크립트를 연결 (페이지 맨 아래에 두면 HTML이 먼저 다 그려진 뒤 실행됨) -->
-  <script src="js/main.js"></script>
-</body>
-</html>
+/* nav 안의 링크들을 가로로 나열 */
+nav {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* 첫 번째 링크(로고)는 굵게 + margin-right:auto로 나머지를 오른쪽으로 밀어냄 */
+nav a:first-child {
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-right: auto;
+}
+
+/* 메인 히어로 영역 */
+.hero {
+  max-width: 600px;
+  margin: 4rem auto;
+  text-align: center;
+  padding: 0 1rem;
+}
+
+.hero h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.cta-button {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 0.8rem 2rem;
+  background: #2f6f4f;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* 운동 백과 목록 */
+.exercise-list {
+  max-width: 700px;
+  margin: 0 auto 4rem;
+  padding: 0 1rem;
+  list-style: none;
+}
+
+.exercise-list li {
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+/* 입력 폼: 라벨과 입력칸을 세로로 쌓는다 */
+.routine-form, .contact-form {
+  max-width: 500px;
+  margin: 0 auto 3rem;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.routine-form label, .contact-form label {
+  font-weight: 600;
+  margin-top: 0.8rem;
+}
+
+.routine-form select, .routine-form input,
+.contact-form input, .contact-form textarea {
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+/* AI 결과: 응답에 들어있는 줄바꿈을 화면에 그대로 살린다 */
+#routine-result {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  white-space: pre-wrap;
+}
+
+#status-message {
+  max-width: 700px;
+  margin: 1rem auto;
+  padding: 0 1rem;
+  text-align: center;
+  color: #2f6f4f;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem;
+  color: #888;
+}
+
+/* 화면 너비가 600px 이하(모바일)일 때만 적용되는 반응형 규칙 */
+@media (max-width: 600px) {
+  nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
+  }
+
+  nav a:first-child {
+    margin-right: 0;
+  }
+
+  .hero h1 {
+    font-size: 1.5rem;
+  }
+}
