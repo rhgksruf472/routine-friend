@@ -33,7 +33,7 @@ class handler(BaseHTTPRequestHandler):
 
             # 키는 URL이 아닌 헤더로 전송 (mission-02에서 URL 노출 사고를 겪고 바꾼 방식)
             response = requests.post(
-                "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
+                                "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.7-flash:generateContent",
 
                 headers={
                     "x-goog-api-key": api_key,
