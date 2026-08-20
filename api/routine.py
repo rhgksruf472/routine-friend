@@ -21,6 +21,8 @@ class handler(BaseHTTPRequestHandler):
 
             # 코드에 키를 직접 쓰지 않고, 환경 변수에서 읽어온다
             api_key = os.environ.get('GEMINI_API_KEY')
+            print(f"[debug] key len={len(api_key) if api_key else 0} prefix={api_key[:3] if api_key else 'NONE'}")
+
 
             prompt = (
                 f"운동 목표: {goal}\n"
