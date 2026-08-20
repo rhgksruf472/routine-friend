@@ -1,14 +1,11 @@
 from http.server import BaseHTTPRequestHandler
 import json
 import os
-from anthropic import Anthropic
+import requests  # Gemini REST API를 직접 호출하기 위해 사용 (mission-02와 동일 방식)
 
-# 파일명이 곧 API 경로가 된다: api/routine.py -> /api/routine
-# 클래스 이름은 반드시 'handler'여야 Vercel이 이 파일을 함수로 인식한다
 class handler(BaseHTTPRequestHandler):
     def do_POST(self):
         try:
-            # 요청 본문(JSON)을 읽어온다
             content_length = int(self.headers['Content-Length'])
             body = json.loads(self.rfile.read(content_length))
 
@@ -23,7 +20,7 @@ class handler(BaseHTTPRequestHandler):
                 return
 
             # 코드에 키를 직접 쓰지 않고, 환경 변수에서 읽어온다
-            client = Anthropic(api_key=os.environ.get('ANTHROPIC_API_KEY'))
+            api_key = os.environ.get('GEMINI_API_KEY')
 
             prompt = (
                 f"운동 목표: {goal}\n"
@@ -34,24 +31,27 @@ class handler(BaseHTTPRequestHandler):
                 "운동명, 세트/횟수 또는 시간, 순서를 포함하고, 예상 소요시간과 주의사항도 알려줘."
             )
 
-            message = client.messages.create(
-                model="claude-haiku-4-5-20251001",
-                max_tokens=1024,
-                messages=[{"role": "user", "content": prompt}]
+            # 키는 URL이 아닌 헤더로 전송 (mission-02에서 URL 노출 사고를 겪고 바꾼 방식)
+            response = requests.post(
+                "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.7-flash:generateContent",
+                headers={
+                    "x-goog-api-key": api_key,
+                    "Content-Type": "application/json"
+                },
+                json={"contents": [{"parts": [{"text": prompt}]}]},
+                timeout=30
             )
+            response.raise_for_status()  # 4xx/5xx면 예외를 일으켜 아래 except로 보냄
 
-            result_text = message.content[0].text
+            # Gemini 응답 JSON에서 실제 텍스트만 꺼낸다
+            result_text = response.json()['candidates'][0]['content']['parts'][0]['text']
             self._send_json(200, {'result': result_text})
 
-
         except Exception as e:
-            # 실패 처리: 무슨 에러인지 서버 로그에 출력 (디버깅용)
             import traceback
             traceback.print_exc()
             self._send_json(500, {'error': '일시적인 오류입니다. 잠시 후 다시 시도해주세요.'})
 
-
-    # 응답을 JSON으로 보내는 반복 코드를 함수로 분리
     def _send_json(self, status_code, data):
         self.send_response(status_code)
         self.send_header('Content-Type', 'application/json')
