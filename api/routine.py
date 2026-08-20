@@ -43,9 +43,13 @@ class handler(BaseHTTPRequestHandler):
             result_text = message.content[0].text
             self._send_json(200, {'result': result_text})
 
-        except Exception:
-            # 실패 처리: API 오류/그 외 서버 오류
+
+        except Exception as e:
+            # 실패 처리: 무슨 에러인지 서버 로그에 출력 (디버깅용)
+            import traceback
+            traceback.print_exc()
             self._send_json(500, {'error': '일시적인 오류입니다. 잠시 후 다시 시도해주세요.'})
+
 
     # 응답을 JSON으로 보내는 반복 코드를 함수로 분리
     def _send_json(self, status_code, data):
