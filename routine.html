@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 루틴 추천 - 루틴프렌드</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index.html">루틴프렌드</a>
+      <a href="index.html">홈</a>
+      <a href="routine.html">AI 루틴 추천</a>
+      <a href="encyclopedia.html">운동 백과</a>
+      <a href="about.html">소개/문의</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>AI 루틴 추천</h1>
+      <p>아래 정보를 입력하면 맞춤 운동 루틴을 만들어드려요.</p>
+    </section>
+
+    <!-- 사용자 입력을 받는 폼. id를 붙여야 JS에서 이 폼을 찾아 값을 읽을 수 있음 -->
+    <form id="routine-form" class="routine-form">
+      <label for="goal">목표</label>
+      <select id="goal" name="goal">
+        <option value="체중감량">체중감량</option>
+        <option value="근력">근력</option>
+        <option value="유연성">유연성</option>
+        <option value="자세교정">자세교정</option>
+      </select>
+
+      <label for="level">운동 경험</label>
+      <select id="level" name="level">
+        <option value="초급">초급</option>
+        <option value="중급">중급</option>
+        <option value="고급">고급</option>
+      </select>
+
+      <label for="time">하루 가용 시간(분)</label>
+      <select id="time" name="time">
+        <option value="15">15분</option>
+        <option value="30">30분</option>
+        <option value="45">45분</option>
+        <option value="60">60분</option>
+      </select>
+
+      <label for="injury">부상·제약 부위 (선택)</label>
+      <input type="text" id="injury" name="injury" placeholder="예: 무릎, 허리 (없으면 비워두세요)">
+
+      <button type="submit" class="cta-button">루틴 추천받기</button>
+    </form>
+
+    <!-- 로딩/에러/결과를 보여줄 빈 자리. JS가 나중에 내용을 채워넣음 -->
+    <div id="status-message"></div>
+    <div id="routine-result"></div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 루틴프렌드</p>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/routine.js"></script>
+</body>
+</html>

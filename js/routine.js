@@ -3,29 +3,23 @@ const form = document.getElementById('routine-form');
 const statusMessage = document.getElementById('status-message');
 const resultBox = document.getElementById('routine-result');
 
-// 폼이 제출될 때(버튼 클릭) 실행될 함수를 등록
 form.addEventListener('submit', async function (event) {
-  // 기본 동작(페이지 새로고침)을 막아야 fetch로 직접 처리할 수 있음
   event.preventDefault();
 
-  // 입력값들을 읽어온다
   const goal = document.getElementById('goal').value;
   const level = document.getElementById('level').value;
   const time = document.getElementById('time').value;
   const injury = document.getElementById('injury').value;
 
-  // 실패 처리 1: 빈 입력(필수값 누락) 방어
   if (!goal || !time) {
     statusMessage.textContent = '목표와 가능 시간을 선택해주세요.';
     return;
   }
 
   resultBox.textContent = '';
-  // 실패 처리 3: 응답이 늦을 수 있으니 미리 로딩 상태를 보여줌
   statusMessage.textContent = '루틴을 만드는 중입니다...';
 
   try {
-    // 서버(api/routine.py)로 사용자 입력을 JSON으로 담아 POST 요청
     const response = await fetch('/api/routine', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -34,7 +28,6 @@ form.addEventListener('submit', async function (event) {
 
     const data = await response.json();
 
-    // 실패 처리 2: API 오류(4xx/5xx)
     if (!response.ok) {
       statusMessage.textContent = data.error || '오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
       return;
@@ -44,7 +37,6 @@ form.addEventListener('submit', async function (event) {
     resultBox.textContent = data.result;
 
   } catch (error) {
-    // 네트워크 문제 등으로 fetch 자체가 실패한 경우
     statusMessage.textContent = '네트워크 오류가 발생했습니다. 연결을 확인해주세요.';
   }
 });

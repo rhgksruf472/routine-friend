@@ -6,3 +6,4 @@ __pycache__/
 
 # Vercel CLI가 로컬 설정을 저장하는 폴더 - 사람마다 다르므로 제외
 .vercel/
+.vercel
